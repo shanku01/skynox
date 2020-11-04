@@ -1,44 +1,166 @@
 <!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style type="text/css">
 	body {
         margin: 0;     
 }
  
 #board {
-        margin: 0 auto;
+        margin:40px auto;
         width: 500px;  
 }
  
 #myCanvas {
-        border: 3px dotted #000;       
+        border: 3px solid #9400D3;       
 }
+button{
+  background-color: white; 
+  color: black; 
+  border: 2px solid #C0C0C0;
+  position: relative;
+  margin:30px; 
+  left: 25%;
+  font-size: 20px;
+}
+input {
+  display: none;
+}
+.button {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.button span {
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border-radius: 100%;
+  transition: ease .3s;
+  background:transparent;
+}
+
+.coral .button span {
+  border:2px solid coral;
+}
+.lawngreen .button span {
+  border:2px solid lawngreen;
+}
+.yellow .button span {
+  border:2px solid yellow;
+}
+.deepskyblue .button span {
+  border:2px solid deepskyblue;
+}
+.layer {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: transparent;
+  z-index: -1;
+}
+@media only screen and (max-width: 600px) {
+	#board{
+		width: 100%;
+	}
+	.button{
+		width: 20px;
+        height: 20px;
+	}
+	.button span{
+		width: 20px;
+        height: 20px;
+	}
+  }
 </style>
 <title>Sketch Pad</title>
 </head>
 <body>
 <div id="board">
+<label class="coral">
+  <input id ="r1" type="radio" name="color">
+  <div class="layer"></div>
+  <div class="button"><span id="s1"></span></div>
+</label>
+<label class="lawngreen">
+  <input id ="r2" type="radio" name="color">
+  <div class="layer"></div>
+  <div class="button"><span id="s1"></span></div>
+</label>
+<label class="yellow">
+  <input id ="r3" type="radio" name="color">
+  <div class="layer"></div>
+  <div class="button"><span id="s1"></span></div>
+</label>
+<label class="deepskyblue">
+  <input id ="r4" type="radio" name="color">
+  <div class="layer"></div>
+  <div class="button"><span id="s1"></span></div>
+</label>
 <canvas id="myCanvas" width="500px" height="500px">
         Sorry, your browser doesn't support canvas technology.
 </canvas>
-<p>Color picker: <select id="selectColor">
-                  <option id="colBlack" value="black" selected="selected">Black</option>
-                  <option id="colRed" value="red">Red</option>
-                  <option id="colBlue" value="blue">Blue</option>
-                  <option id="colGreen" value="green">Green</option>
-                  <option id="colOrange" value="orange">Orange</option>
-                  <option id="colYellow" value="yellow">Yellow</option>
-</select>
-</p>
-<button id="download">download</button>
+<button id="download">Download the pdf</button>
 </div>
+
 <script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
 <script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
 <script type="text/javascript">
         window.onload = function() {
                 var myCanvas = document.getElementById("myCanvas");
-                var curColor = $('#selectColor option:selected').val();
+                var r1 = document.getElementById('r1');
+                var r2 = document.getElementById('r2');
+                var r3 = document.getElementById('r3');
+                var r4 = document.getElementById('r4');
+                var curColor = "coral";
+                r1.onclick = handler1;
+                r2.onclick = handler2;
+                r3.onclick = handler3;
+                r4.onclick = handler4;
+                function handler1(){
+                	curColor="coral"
+                	$('.coral .button span').css({'background': 'coral'});
+                	$('.deepskyblue .button span').css({'background': 'white'});
+                	$('.yellow .button span').css({'background': 'white'});
+                	$('.lawngreen .button span').css({'background': 'white'});
+                }
+                function handler2(){
+                	curColor="lawngreen"
+                	$('.lawngreen .button span').css({'background': 'lawngreen'});
+                	$('.coral .button span').css({'background': 'white'});
+                	$('.deepskyblue .button span').css({'background': 'white'});
+                	$('.yellow .button span').css({'background': 'white'});
+                }
+                function handler3(){
+                	curColor="yellow"
+                	$('.yellow .button span').css({'background': 'yellow'});
+                	$('.lawngreen .button span').css({'background': 'white'});
+                	$('.coral .button span').css({'background': 'white'});
+                	$('.deepskyblue .button span').css({'background': 'white'});
+                }
+                function handler4(){
+                	curColor="deepskyblue"
+                	$('.deepskyblue .button span').css({'background': 'deepskyblue'});
+                	$('.yellow .button span').css({'background': 'white'});
+                	$('.lawngreen .button span').css({'background': 'white'});
+                	$('.coral .button span').css({'background': 'white'});
+                }
                 if(myCanvas){
                                 var isDown      = false;
                                 var ctx = myCanvas.getContext("2d");
@@ -67,7 +189,6 @@
                                                 ctx.closePath();
                                 });
                 }
-                 
                 $('#selectColor').change(function () {
                                 curColor = $('#selectColor option:selected').val();
                 });
@@ -75,11 +196,12 @@
         };
 var canvas = document.getElementById('myCanvas');
 download.addEventListener("click", function() {
-  var imgData = canvas.toDataURL("image/jpeg", 1.0);
-  var pdf = new jsPDF();
-  pdf.addImage(imgData, 'JPEG', 0, 0);
-  pdf.save("download.pdf");
-}, false);
+  var imgData = canvas.toDataURL("image/png",1.00);
+  var doc = new jsPDF();
+  doc.setFillColor(255, 255,255,1);  
+  doc.addImage(imgData, 'png', 10, 10, 150, 100);
+  doc.save('Sketch.pdf');
+});
 </script>
 </body>
 </html>
