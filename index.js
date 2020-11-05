@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const path =require('path');
 const port = process.env.port || 3000;
-app.listen(PORT, () => {
+
+app.listen(port, () => {
     console.log(`Our app is running on port ${ PORT }`);
 })
 
